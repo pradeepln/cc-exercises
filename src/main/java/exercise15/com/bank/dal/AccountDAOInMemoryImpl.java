@@ -19,6 +19,7 @@ public class AccountDAOInMemoryImpl implements AccountDAO {
 	@Override
 	public int create(Account account) {
 		Integer id = ++counter;
+		account.setId(id);
 		db.put(id, account);
 		return id;
 	}

@@ -11,11 +11,17 @@ public class FixedArrayStack implements Stack{
 	
 	@Override
 	public void push(Object anElement) {
+		if(top == contents.length - 1) {
+			throw new StackFullException("Stack is full with size: "+contents.length);
+		}
 		contents[++top] = anElement;
 	}
 	
 	@Override
 	public Object pop() {
+		if(top == -1) {
+			throw new StackEmptyException("Stack is empty");
+		}
 		return contents[top--];
 	}
 

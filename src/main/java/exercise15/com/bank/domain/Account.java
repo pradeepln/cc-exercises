@@ -5,6 +5,7 @@ public class Account {
 	int id;
 	String type;
 	double balance;
+	
 	public int getId() {
 		return id;
 	}

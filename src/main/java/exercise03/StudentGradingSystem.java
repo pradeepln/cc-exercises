@@ -1,39 +1,71 @@
 package exercise03;
 
-
 //https://www.geeksforgeeks.org/how-to-print-colored-text-in-java-console/
+//DRY
 public class StudentGradingSystem {
 
-	public void gradeStudents(Student s1,Student s2) {
-		if(s1.getPhysicsMarks()>=40&&s1.getChemistryMarks()>=40&&s1.getMathsMarks()>=40) {
-			if(s1.getPhysicsMarks() + s1.getChemistryMarks() + s1.getMathsMarks()>=120&&s1.getPhysicsMarks() + s1.getChemistryMarks() + s1.getMathsMarks()<180)
-			{
-				System.out.println("\u001B[43m"+"Student with name "+s1.getName()+" just pass"+"\u001B[0m");
-			}else if(s1.getPhysicsMarks() + s1.getChemistryMarks() + s1.getMathsMarks()>=180) {
-				System.out.println("\u001B[42m"+"Student with name "+s1.getName()+" first class"+"\u001B[0m");
-			}
-		}else {
-			System.out.println("\u001B[41m"+"Student with name "+s1.getName()+" fails!"+"\u001B[0m");
-		}
-		
-		if(s2.getPhysicsMarks()>=40&&s2.getChemistryMarks()>=40&&s2.getMathsMarks()>40) {
-			if(s2.getPhysicsMarks() + s2.getChemistryMarks() + s2.getMathsMarks()>=40&&s2.getPhysicsMarks() + s2.getChemistryMarks() + s2.getMathsMarks()<60)
-			{
-				System.out.println("\u001B[43m"+"Student with name "+s2.getName()+" just pass"+"\u001B[0m");
-			}else if(s2.getPhysicsMarks() + s2.getChemistryMarks() + s2.getMathsMarks()>=60) {
-				System.out.println("\u001B[42m"+"Student with name "+s2.getName()+" first class"+"\u001B[0m");
-			}
-		}else {
-			System.out.println("\u001B[41m"+"Student with name "+s2.getName()+" fails!"+"\u001B[0m");
-		}
-	}
+	private static final String ANSI_RESET = "\u001B[0m";
+	private static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
+	private static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
+	private static final String ANSI_RED_BACKGROUND = "\u001B[41m";
+	private static final int MIN_MARKS_FOR_FIRST_CLASS = 180;
+
+	
 	public static void main(String[] args) {
-		
+
 		Student s1 = new Student(41, 41, 41, "Ram");
 		Student s2 = new Student(74, 69, 39, "Sham");
-		
+
 		StudentGradingSystem sgs = new StudentGradingSystem();
 		sgs.gradeStudents(s1, s2);
 	}
+	
+	public void gradeStudents(Student...students) {
+		for(Student s : students) {
+			Grade grade = gradeAStudent(s);
+			String displayText = encodeDisplayText(s, grade);
+			System.out.println(displayText);
+		}
+		
+	}
+
+	Grade gradeAStudent(Student aStudent) {
+		if(isPassed(aStudent)) {
+			if(getTotal(aStudent) < MIN_MARKS_FOR_FIRST_CLASS)
+			{
+				return Grade.PASS;
+			} else {
+				return Grade.FIRST;
+			}
+		}else {
+			return Grade.FAIL;
+		}
+		
+	}
+
+	int getTotal(Student aStudent) {
+		return aStudent.getPhysicsMarks() + aStudent.getChemistryMarks() + aStudent.getMathsMarks();
+	}
+
+	boolean isPassed(Student aStudent) {
+		return aStudent.getPhysicsMarks() >= 40 && aStudent.getChemistryMarks() >= 40 && aStudent.getMathsMarks() >= 40;
+	}
+
+	private String encodeDisplayText(Student aStudent, Grade grade) {
+		String encodedDisplayText = null;
+		switch (grade) {
+		case FAIL :
+			encodedDisplayText = ANSI_RED_BACKGROUND+"Student with name "+aStudent.getName()+" fails!"+ANSI_RESET;
+			break;
+		case PASS :
+			encodedDisplayText = ANSI_YELLOW_BACKGROUND+"Student with name "+aStudent.getName()+" just pass"+ANSI_RESET;
+			break;
+		case FIRST :
+			encodedDisplayText = ANSI_GREEN_BACKGROUND+"Student with name "+aStudent.getName()+" first class"+ANSI_RESET;
+		}
+		return encodedDisplayText;
+	}
+
+	
 
 }

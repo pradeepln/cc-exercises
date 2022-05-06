@@ -1,5 +1,7 @@
 package exercise16;
 
+import java.util.Arrays;
+
 public class FixedArrayStack implements Stack{
 	
 	private Object[] contents;
@@ -10,13 +12,17 @@ public class FixedArrayStack implements Stack{
 	}
 	
 	@Override
-	public void push(Object anElement) {
+	public synchronized void push(Object anElement) {
 		contents[++top] = anElement;
 	}
 	
 	@Override
-	public Object pop() {
+	public synchronized Object pop() {
 		return contents[top--];
 	}
 
+	@Override
+	public synchronized Object[] toArray() {
+		return Arrays.copyOf(contents, contents.length);
+	}
 }

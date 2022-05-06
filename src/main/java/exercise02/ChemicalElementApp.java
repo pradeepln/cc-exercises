@@ -11,8 +11,8 @@ public class ChemicalElementApp {
 //		h.name = "Hydrogen";
 		ChemicalElement k = new ChemicalElement(19, "Potassium", "K");
 		
-		System.out.println("Is hydrogen an alkali? "+h.alkali());
-		System.out.println("Is potassium an alkali? "+k.alkali());
+		System.out.println("Is hydrogen an alkali? "+h.isAlkaliMetal());
+		System.out.println("Is potassium an alkali? "+k.isAlkaliMetal());
 		
 		System.out.println("h == h2? "+ (h == h2));
 		System.out.println("h == h3? "+ (h == h3));

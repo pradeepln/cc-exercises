@@ -1,14 +1,16 @@
 package exercise13;
 
+import java.util.Optional;
+
 public class EmployeeDAO {
 
-	public static Employee findEmployeeById(int id) {
+	public  Optional<Employee> findEmployeeById(int id) {
 		// db query select * from employee where emp_id=id
-		boolean found = true;
+		boolean found = false;
 		if(found) {
-			return (new Employee(1));
+			return Optional.of(new Employee(id));
 		}else {
-			return null;
+			return Optional.empty();
 		}
 	}
 }

@@ -2,66 +2,63 @@ package exercise02;
 
 import java.util.Objects;
 
-public class ChemicalElement implements Comparable<ChemicalElement> { 
-	
-	
-	public boolean alkali() {
-		return alkaliMetals[atomic_number];
+public class ChemicalElement implements Comparable<ChemicalElement> {
+
+	private static final boolean[] ALKALI_METALS = new boolean[120];
+	static {
+		ALKALI_METALS[3] = true;
+		ALKALI_METALS[11] = true;
+		ALKALI_METALS[19] = true;
+		ALKALI_METALS[37] = true;
+		ALKALI_METALS[55] = true;
+		ALKALI_METALS[87] = true;
 	}
 	
-	public boolean trans() {
-		return (this.atomic_number >= 21 && this.atomic_number <= 31)
-				|| (this.atomic_number >= 39 && this.atomic_number <= 48)
-				|| (this.atomic_number >= 72 && this.atomic_number <= 80)
-				|| (this.atomic_number >= 104 && this.atomic_number <= 112);
-	}
-	
-	private int atomic_number;
-	private String name, SYM;
-	
-	
-	public ChemicalElement(int atomicNumber, String humanname, String symbolicname) {
-		if(atomicNumber <= 0) {
+	private int atomicNumber;
+	private String name, symbol;
+
+	public ChemicalElement(int atomicNumber, String name, String symbol) {
+		if (atomicNumber <= 0) {
 			throw new IllegalArgumentException("hey, you can't pass 0 or -ve number for atomic number!!");
 		}
-		this.atomic_number = atomicNumber;
-		this.name = humanname;
-		this.SYM = symbolicname;
+		this.atomicNumber = atomicNumber;
+		this.name = name;
+		this.symbol = symbol;
 	}
 	
 	
-	
-	public boolean metal() {
-				
-		switch (atomic_number) {
-		case 13:
-			return true;
-		case 49:
-			return true;
-		case 50:
-			return true;
-		case 81:
-			return true;
-		case 82:
-			return true;
-		case 83:
-			return true;
-		case 113:
-			return true;
-		case 114:
-			return true;
-		case 115:
-			return true;
-		case 116:
-			return true;
-		default:
-			return false;
+	public boolean isAlkaliMetal() {
+		return ALKALI_METALS[atomicNumber];
+	}
+
+	public boolean isTransitionMetal() {
+		return (this.atomicNumber >= 21 && this.atomicNumber <= 31)
+				|| (this.atomicNumber >= 39 && this.atomicNumber <= 48)
+				|| (this.atomicNumber >= 72 && this.atomicNumber <= 80)
+				|| (this.atomicNumber >= 104 && this.atomicNumber <= 112);
+	}
+
+	public boolean isMetal() {
+
+		switch (atomicNumber) {
+			case 13:
+			case 49:
+			case 50:
+			case 81:
+			case 82:
+			case 83:
+			case 113:
+			case 114:
+			case 115:
+			case 116:
+				return true;
+			default:
+				return false;
 		}
 	}
-	
-	
+
 	public int getAtomicNumber() {
-		return atomic_number;
+		return atomicNumber;
 	}
 
 	public String getName() {
@@ -69,47 +66,38 @@ public class ChemicalElement implements Comparable<ChemicalElement> {
 	}
 
 	public String getSymbol() {
-		return SYM;
+		return symbol;
 	}
 
+	
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(atomicNumber);
+	}
 
 
 	@Override
 	public boolean equals(Object obj) {
-
-		ChemicalElement other = (ChemicalElement) obj;
-		if (atomic_number != other.atomic_number)
+		if (this == obj)
+			return true;
+		if (obj == null)
 			return false;
-		return true;
+		if (getClass() != obj.getClass())
+			return false;
+		ChemicalElement other = (ChemicalElement) obj;
+		return atomicNumber == other.atomicNumber;
 	}
 
-	
+
 	@Override
 	public int compareTo(ChemicalElement other) {
-		
-		
-		if(this.atomic_number > other.atomic_number) {
-			return 1;
-		}else if(other.atomic_number > this.atomic_number) {
-			return -1;
-		}else {
-			return 0;
-		}
+		return this.atomicNumber - other.atomicNumber;
 	}
 
 	@Override
 	public String toString() {
-		return "ChemicalElement [atomicNumber=" + atomic_number + ", name=" + name + ", symbol=" + SYM + "]";
+		return "ChemicalElement [atomicNumber=" + atomicNumber + ", name=" + name + ", symbol=" + symbol + "]";
 	}
-	
-private static final boolean[] alkaliMetals = new boolean[120];
-	
-	static {
-		alkaliMetals[3] = true;
-		alkaliMetals[11] = true;
-		alkaliMetals[19] = true;
-		alkaliMetals[37] = true;
-		alkaliMetals[55] = true;
-		alkaliMetals[87] = true;
-	}
+
 }

@@ -2,19 +2,17 @@ package exercise11;
 
 public class LendingSystem {
 	
-	public int processLoanRequest(String applicantName, String address,	String purposeOfLoan, String specialRequests, String type, int cibilScore, int requiredTerm) {
+	public boolean processLoanRequest(String applicantName, String address,	String purposeOfLoan, String specialRequests, String type, int cibilScore, int requiredTerm) {
 		if(applicantName == null || type == null) {
-			System.out.println("applicant name and applicant type are needed parameters");
-			return -1;
+			throw new IllegalArgumentException("applicant name and applicant type are needed parameters");
 		}
 		if(!type.equalsIgnoreCase("government") && cibilScore <= 0) {
-			System.out.println("For all applicant types other than government, cibil score is needed");
-			return -2;
+			throw new IllegalArgumentException("For all applicant types other than government, cibil score is needed");
 		}
 		
 		//ACTUAL LOGIC HERE, elided for simplicity
 		
-		return 1;
+		return true;
 	}
 
 }
